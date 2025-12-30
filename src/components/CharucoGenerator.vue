@@ -16,8 +16,8 @@
     </q-card-section>
 
     <q-card-actions align="right" class="text-primary">
-      <q-btn no-caps flat label="Cancel" v-close-popup />
-      <q-btn color="green" no-caps label="Generate" @click="postBoardDefinition" :loading="loading" />
+      <q-btn no-caps flat :label="$t('BTN_LABEL_CANCEL')" v-close-popup />
+      <q-btn color="green" no-caps :label="$t('BTN_LABEL_GENERATE')" @click="postBoardDefinition" :loading="loading" />
     </q-card-actions>
 
     <q-card-section v-if="imageUrl">
@@ -31,6 +31,9 @@ import { _fetch } from 'src/util/fetch_api'
 import { ref } from 'vue'
 import type { components } from '../dto/api'
 import { Notify } from 'quasar'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 type CharucoBoardDefinition = components['schemas']['CharucoBoardDefinition']
 
@@ -75,7 +78,7 @@ async function postBoardDefinition() {
 
     Notify.create({
       message: String(err),
-      caption: 'Error generating the board',
+      caption: t('MSG_ERROR_GENERATING_BOARD'),
       color: 'negative',
     })
   } finally {

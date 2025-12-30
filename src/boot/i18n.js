@@ -3,10 +3,11 @@ import { default as messages } from 'src/i18n'
 import { usePreferredLanguages } from '@vueuse/core'
 
 const preferredLanguages = usePreferredLanguages()
+
 const incontextLanguageCodeSpecial = 'lol-US'
 const i18n = createI18n({
-  locale: resolvePreferredLocale(preferredLanguages.value[0]),
-  fallbackLocale: 'en-US',
+  locale: 'vi-VN',
+  fallbackLocale: 'vi-VN',
   legacy: false, // comment this out if not using Composition API
   fallbackWarn: false,
   missingWarn: false,
@@ -42,23 +43,9 @@ const getLanguageName = (locale) => {
   const localeName = new Intl.DisplayNames([locale], { type: 'language', languageDisplay: 'standard' })
   return localeName.of(locale)
 }
-function resolvePreferredLocale(preferredLocale) {
-  // exact match avail?
-  if (Object.keys(messages).includes(preferredLocale)) return preferredLocale
-
-  // if no exact match, maybe at least the base lang is avail?
-  const baseLang = preferredLocale.split('-')[0]
-  const fallbackLang = Object.keys(messages).find((key) => key.startsWith(baseLang))
-  if (fallbackLang) return fallbackLang
-
-  return 'en-US' // final fallback
-}
 
 export default ({ app }) => {
-  console.log(
-    `preferred languages configured in the browser: ${preferredLanguages.value},
-     best match for ${preferredLanguages.value[0]} found is ${i18n.global.locale.value}, otherwise fallback to en-US`,
-  )
+  console.log('Forcing locale to vi-VN')
 
   // Tell app to use the I18n instance
   app.use(i18n)

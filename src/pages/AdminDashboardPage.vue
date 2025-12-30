@@ -320,7 +320,7 @@
 
                 <q-item-label>
                   <!--eslint-disable-next-line @intlify/vue-i18n/no-raw-text-->
-                  <q-tooltip> last used at: {{ entry.last_used_at }} </q-tooltip>
+                  <q-tooltip> {{ $t('last used at') }}: {{ entry.last_used_at }} </q-tooltip>
                   <q-item-label> {{ entry.count }} </q-item-label>
                 </q-item-label>
               </q-item-section>
@@ -332,7 +332,7 @@
         </q-card-section>
         <q-separator />
         <q-card-actions align="right">
-          <q-btn no-caps flat color="green" label="Reset all" @click="displayResetStatsConfirm('')" />
+          <q-btn no-caps flat color="green" :label="$t('Reset all')" @click="displayResetStatsConfirm('')" />
         </q-card-actions>
       </q-card>
 
@@ -362,7 +362,7 @@
         </q-card-section>
         <q-separator />
         <q-card-actions align="right">
-          <q-btn no-caps flat color="green" label="Reset all" @click="displayResetLimitsConfirm('')" />
+          <q-btn no-caps flat color="green" :label="$t('Reset all')" @click="displayResetLimitsConfirm('')" />
         </q-card-actions>
       </q-card>
     </div>

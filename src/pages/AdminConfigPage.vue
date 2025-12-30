@@ -5,7 +5,7 @@
         v-for="(element, index) in configurables"
         :key="index"
         :to="{ name: 'config', params: { section: element } }"
-        :label="element.replace(/_/g, ' ').split('.').pop()"
+        :label="translateModuleName(element)"
         replace
         style="text-transform: capitalize"
       />
@@ -78,9 +78,11 @@ import { Notify } from 'quasar'
 import { useRoute } from 'vue-router'
 import type { components } from '../dto/api'
 import { useLocalStorage } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 
 // bind object
 
+const { t } = useI18n()
 const autoReloadServicesOnSave = useLocalStorage('autoReloadServicesOnSave', true)
 const route = useRoute()
 const configurationStore = useConfigurationStore()
@@ -130,7 +132,7 @@ const getSchema = async () => {
 
     Notify.create({
       message: String(err),
-      caption: 'Error getting configuration scheme',
+      caption: t('Error getting configuration scheme'),
       color: 'negative',
     })
   } finally {
@@ -160,7 +162,7 @@ const getConfigurables = async () => {
 
     Notify.create({
       message: String(error),
-      caption: 'Error getting configurables!',
+      caption: t('Error getting configurables!'),
       color: 'red',
     })
   } finally {
@@ -179,7 +181,7 @@ const getConfig = async () => {
 
     Notify.create({
       message: String(error),
-      caption: 'Error getting config!',
+      caption: t('Error getting config!'),
       color: 'red',
     })
   } finally {
@@ -210,9 +212,9 @@ const saveConfig = async () => {
         configurationStore.postConfigchanged()
       }
 
-      let message = 'Configuration saved.'
+      let message = t('Configuration saved.')
       if (autoReloadServicesOnSave.value) {
-        message = 'Configuration saved and applied by reloading services.'
+        message = t('Configuration saved and applied by reloading services.')
       }
       Notify.create({
         message: message,
@@ -236,7 +238,7 @@ const saveConfig = async () => {
       })
 
       Notify.create({
-        caption: 'Configuration Validation Error',
+        caption: t('Configuration Validation Error'),
         icon: 'sym_o_error',
         html: true,
         message: notify_msg,
@@ -248,11 +250,28 @@ const saveConfig = async () => {
     console.error(error)
     Notify.create({
       message: String(error),
-      caption: 'Error saving config',
+      caption: t('Error saving config'),
       color: 'negative',
     })
   }
 }
+
+// Translation mapping for module names
+const moduleNameTranslations: Record<string, string> = {
+  'app': 'Ứng dụng',
+  'commander': 'Điều khiển',
+  'filter pilgram2': 'Bộ lọc Pilgram2',
+  'gpio lights': 'Đèn GPIO',
+  'synchronizer': 'Đồng bộ',
+  'wled': 'WLED'
+}
+
+// Helper function to translate module names
+const translateModuleName = (moduleName: string): string => {
+  const cleanName = moduleName.replace(/_/g, ' ').split('.').pop() || ''
+  return moduleNameTranslations[cleanName] || cleanName
+}
+
 </script>
 <style lang="scss">
 .control-wrapper {

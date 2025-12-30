@@ -13,7 +13,7 @@
             @click="activeCategory = index"
             style="text-transform: capitalize"
           >
-            <q-item-section> {{ visibleCategoryLabels[index].replace(/_/g, ' ') }}</q-item-section>
+            <q-item-section> {{ translateCategoryName(visibleCategoryLabels[index]) }}</q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>
@@ -86,6 +86,24 @@ export default defineComponent({
       return this.visibleCategories.map((element: any) => {
         return element.label ?? `${(element as Category & Scoped).scope.split('/').pop()}` //TODO: this is a workaround until categorization is well implemented.
       })
+    },
+  },
+  methods: {
+    translateCategoryName(categoryName: string): string {
+      // Translation mapping for category names
+      const categoryNameTranslations: Record<string, string> = {
+        'common': 'Chung',
+        'actions': 'Hành động',
+        'share': 'Chia sẻ',
+        'qrshare': 'Chia sẻ QR',
+        'filetransfer': 'Truyền tệp',
+        'mediaprocessing': 'Xử lý media',
+        'uisettings': 'Cài đặt giao diện',
+        'backends': 'Backend',
+        'hardwareinputoutput': 'Phần cứng (GPIO/Máy in)',
+        'misc': 'Khác'
+      }
+      return categoryNameTranslations[categoryName] || categoryName.replace(/_/g, ' ')
     },
   },
 })
